@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+using System.Configuration;
 using System.Threading.Tasks;
 using Quartz;
 using Quartz.Impl;
+
+//using Topshelf;
 
 namespace QuartzSample
 {
@@ -13,6 +12,22 @@ namespace QuartzSample
     {
         static void Main(string[] args)
         {
+
+            //HostFactory.Run(x =>
+            //{
+            //    x.RunAsLocalSystem();
+
+            //    x.SetDescription(Configuration.ServiceDescription);
+            //    x.SetDisplayName(Configuration.ServiceDisplayName);
+            //    x.SetServiceName(Configuration.ServiceName);
+
+            //    x.Service(factory =>
+            //    {
+            //        QuartzServer server = QuartzServerFactory.CreateServer();
+            //        server.Initialize().GetAwaiter().GetResult();
+            //        return server;
+            //    });
+            //});
             var schedulerFactory = new StdSchedulerFactory();
 
             var scheduler = schedulerFactory.GetScheduler().Result;
