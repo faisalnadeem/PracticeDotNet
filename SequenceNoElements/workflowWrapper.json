@@ -1,0 +1,597 @@
+{
+	"workflowDefinitionVersionId": "b35e6d85-2401-4930-b072-2ebcc5206d77",
+	"timeCreated": "2017-07-04T14:05:19.6339547Z",
+	"workflow": {
+		"id": "35d4a920-8cd2-4a36-957d-d56eaaa64933",
+		"activities": [
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"InProgress\"",
+				"id": "df7049eb-0f33-4f39-afb4-c137638f2a2a",
+				"name": "InProgress",
+				"transitions": [
+					{
+						"id": "993b3d28-ee11-4c59-855b-14164064ca8f",
+						"name": "-",
+						"targetId": "b49a80cb-b06d-4a0c-b1db-c2b874547660"
+					}
+				]
+			},
+			{
+				"parameters": "",
+				"requiredData": 7,
+				"activityConfiguration": "",
+				"serviceName": "DataCollectionActivity",
+				"serviceUri": "fabric:/DataCollectionActivityService/DataCollectionActivity",
+				"id": "b49a80cb-b06d-4a0c-b1db-c2b874547660",
+				"name": "Data Collection",
+				"transitions": [
+					{
+						"id": "a149ae22-f45a-4a80-b3f7-ce2d5eeea5b4",
+						"name": "-",
+						"targetId": "8bf42d0b-f24f-426f-ada5-36898c5b21da"
+					}
+				]
+			},
+			{
+				"parameters": "",
+				"requiredData": 0,
+				"activityConfiguration": "",
+				"serviceName": "MatchingActivity",
+				"serviceUri": "fabric:/MatchingActivityService/MatchingActivity",
+				"id": "8bf42d0b-f24f-426f-ada5-36898c5b21da",
+				"name": "Matching",
+				"transitions": [
+					{
+						"id": "6a466ccd-5c80-45c6-b023-5fef779c90bd",
+						"name": "-",
+						"targetId": "13b2a1a5-0507-410a-a185-fa6bb0bab02f"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(Matching_CurrentAddressMatchLevel=\"F\" OR Matching_PreviousAddressMatchLevel=\"F\", \"Matched\",\"NoMatch\")",
+				"id": "13b2a1a5-0507-410a-a185-fa6bb0bab02f",
+				"name": "Matching Check",
+				"transitions": [
+					{
+						"id": "be0394e4-3c9d-4975-bce5-7e0f702d63ed",
+						"name": "NoMatch",
+						"targetId": "a7a49486-4ea4-4405-a194-787a0589fec1"
+					},
+					{
+						"id": "2bf48e4d-2f16-4c2c-96bf-e9685657497d",
+						"name": "Matched",
+						"targetId": "cb5016c4-6be2-4ef6-8cb5-71e6c7940bc0"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"NoMatch\"",
+				"id": "a7a49486-4ea4-4405-a194-787a0589fec1",
+				"name": "No Match",
+				"transitions": []
+			},
+			{
+				"variableName": "IndividualId",
+				"expression": "If(Matching_CurrentAddressMatchLevel=\"F\", Matching_CurrentAddressIndividualId, Matching_PreviousAddressIndividualId)",
+				"id": "cb5016c4-6be2-4ef6-8cb5-71e6c7940bc0",
+				"name": "Assign Individual Id",
+				"transitions": [
+					{
+						"id": "77ea355d-6acd-44d1-bd1d-3dec95ad84db",
+						"name": "-",
+						"targetId": "6c92a8cf-1c36-46c4-8c89-1823aed6e1cc"
+					}
+				]
+			},
+			{
+				"variableName": "ResidenceId",
+				"expression": "If(Matching_CurrentAddressMatchLevel=\"F\", Matching_CurrentAddressResidenceId, Matching_PreviousAddressResidenceId)",
+				"id": "6c92a8cf-1c36-46c4-8c89-1823aed6e1cc",
+				"name": "Assign Residence Id",
+				"transitions": [
+					{
+						"id": "22baac14-e185-42d0-bf53-646111bb09aa",
+						"name": "-",
+						"targetId": "9e37a09a-3ad5-4ec7-9c7e-b57a8bd029c0"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_OutputProperties",
+				"expression": "\"IndividualId|ResidenceId\"",
+				"id": "9e37a09a-3ad5-4ec7-9c7e-b57a8bd029c0",
+				"name": "Add IndividualId and ResidenceId to Workflow_OutputProperties",
+				"transitions": [
+					{
+						"id": "22623312-b919-4a6d-88f4-10fe2beceedf",
+						"name": "-",
+						"targetId": "4211aec5-9da7-4e19-a250-d36d0e0add1a"
+					}
+				]
+			},
+			{
+				"activityConfiguration": "",
+				"serviceName": "PredictiveAnalyticsActivity",
+				"serviceUri": "fabric:/PredictiveAnalyticsActivityService/PredictiveAnalyticsActivity",
+				"id": "4211aec5-9da7-4e19-a250-d36d0e0add1a",
+				"name": "Predictive Analytics",
+				"transitions": [
+					{
+						"id": "98eb69d3-1ce2-4a02-af1a-7e9e0f961331",
+						"name": "-",
+						"targetId": "447919ff-efab-4130-940b-c33b23683b81"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(PredictiveAnalytics_RiskScore>=0.5, \"Fail_PredictiveAnalytics\",\"Pass_PredictiveAnalytics\")",
+				"id": "447919ff-efab-4130-940b-c33b23683b81",
+				"name": "Predictive Analytics Check",
+				"transitions": [
+					{
+						"id": "717b01a0-725b-4559-bb20-c01982df7edd",
+						"name": "Fail_PredictiveAnalytics",
+						"targetId": "6c453ae6-3c27-4391-a833-1a8a09fc8b33"
+					},
+					{
+						"id": "13170031-efbb-4c58-bd23-f7a2f8b56daa",
+						"name": "Pass_PredictiveAnalytics",
+						"targetId": "27cf616b-bc72-403e-a122-796d61fb770a"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"FailedPredictiveAnalytics\"",
+				"id": "6c453ae6-3c27-4391-a833-1a8a09fc8b33",
+				"name": "Failed Predictive Analytics",
+				"transitions": []
+			},
+			{
+				"parameters": "",
+				"requiredData": 0,
+				"activityConfiguration": "",
+				"serviceName": "IdRiskActivity",
+				"serviceUri": "fabric:/IdRiskActivityService/IdRiskActivity",
+				"id": "27cf616b-bc72-403e-a122-796d61fb770a",
+				"name": "Id Enhanced",
+				"transitions": [
+					{
+						"id": "7dace09c-16f7-41ab-8dd3-c6511c993541",
+						"name": "-",
+						"targetId": "21b5a5ed-5af0-431c-9171-a9cd443a4f8d"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(IdRisk_MatchLevel=\"NoMatchFound\", \"Fail_Id\", If(IdRisk_NumPrimaryChecks<2 AND IdRisk_NumShareRecords<2, \"InsufficientCreditData\", If(IdRisk_DeceasedWarning=1, \"Fail_Id\", If(IdRisk_AddressLinkWarning=1 OR IdRisk_ConfirmatoryDoBs=1 OR IdRisk_NumSpecificCIFASRecords>0, \"Pass_Id_Amber\", \"Pass_Id_Green\"))))",
+				"id": "21b5a5ed-5af0-431c-9171-a9cd443a4f8d",
+				"name": "Id Enhanced Check",
+				"transitions": [
+					{
+						"id": "7bb0549d-8ca2-40fa-8683-88f8891d562d",
+						"name": "Fail_Id",
+						"targetId": "2fbe9e63-eef2-438e-8e18-4ae9835d175f"
+					},
+					{
+						"id": "3d758f1a-07ca-4e19-89b6-9bc31a224592",
+						"name": "InsufficientCreditData",
+						"targetId": "9df4e096-2ca1-43bc-a815-2c3052a13c4e"
+					},
+					{
+						"id": "0ba1e91c-e932-4d97-8859-b41a92a287c0",
+						"name": "Pass_Id_Amber",
+						"targetId": "201e8e57-1cd6-4e32-8bb4-ba3e860d3e32"
+					},
+					{
+						"id": "fae46505-08c9-41d6-925f-a0a27bf08a90",
+						"name": "Pass_Id_Green",
+						"targetId": "68d78256-538f-451a-b8ba-1e8a02aecea9"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"FailedIdEnhanced\"",
+				"id": "2fbe9e63-eef2-438e-8e18-4ae9835d175f",
+				"name": "Failed Id Enhanced",
+				"transitions": []
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"InsufficientCreditData\"",
+				"id": "9df4e096-2ca1-43bc-a815-2c3052a13c4e",
+				"name": "Insufficient Credit Data",
+				"transitions": []
+			},
+			{
+				"variableName": "KBA_MaximumQuestions",
+				"expression": "4",
+				"id": "68d78256-538f-451a-b8ba-1e8a02aecea9",
+				"name": "Assign KBA Maximum Questions Green",
+				"transitions": [
+					{
+						"id": "0b792b96-356e-4e85-983f-7ec2954d406c",
+						"name": "-",
+						"targetId": "d6b94fc2-5584-42ad-8ce9-8cdcd6a0ef6d"
+					}
+				]
+			},
+			{
+				"variableName": "KBA_ExpectedCorrectAnswers",
+				"expression": "3",
+				"id": "d6b94fc2-5584-42ad-8ce9-8cdcd6a0ef6d",
+				"name": "Assign KBA Expected Correct Answers Green",
+				"transitions": [
+					{
+						"id": "b01dd782-f992-47f6-b3a7-ff58190b18c7",
+						"name": "-",
+						"targetId": "cc286ad3-2ca7-4a73-8781-ad81e3929296"
+					}
+				]
+			},
+			{
+				"variableName": "KBA_MaximumQuestions",
+				"expression": "6",
+				"id": "201e8e57-1cd6-4e32-8bb4-ba3e860d3e32",
+				"name": "Assign KBA Maximum Questions Amber",
+				"transitions": [
+					{
+						"id": "c76dff28-6299-4af2-a16f-f47b577cfc37",
+						"name": "-",
+						"targetId": "0e7ce341-dd7c-4946-81de-cb3f17a8928b"
+					}
+				]
+			},
+			{
+				"variableName": "KBA_ExpectedCorrectAnswers",
+				"expression": "5",
+				"id": "0e7ce341-dd7c-4946-81de-cb3f17a8928b",
+				"name": "Assign KBA Expected Correct Answers Amber",
+				"transitions": [
+					{
+						"id": "a3539e71-cc77-4d14-b811-c7a6205a62e3",
+						"name": "-",
+						"targetId": "cc286ad3-2ca7-4a73-8781-ad81e3929296"
+					}
+				]
+			},
+			{
+				"parameters": "",
+				"requiredData": 0,
+				"activityConfiguration": "",
+				"serviceName": "RTFAActivity",
+				"serviceUri": "fabric:/RTFAActivityService/RTFAActivity",
+				"id": "cc286ad3-2ca7-4a73-8781-ad81e3929296",
+				"name": "RTFA",
+				"transitions": [
+					{
+						"id": "79f6abde-1d41-41a0-968c-1dcb438e3ae4",
+						"name": "-",
+						"targetId": "0d3704a0-1427-403e-a86e-7c828c590037"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(RTFA_EmailVelocityWarning=\"yes\" OR RTFA_PhoneVelocityWarning=\"yes\" OR RTFA_IdentityVelocityWarning=\"yes\", \"Fail_RTFA\", \"Pass_RTFA\")",
+				"id": "0d3704a0-1427-403e-a86e-7c828c590037",
+				"name": "RTFA Check",
+				"transitions": [
+					{
+						"id": "9ea4b144-b276-4dd9-9bf6-14dd1648c03d",
+						"name": "Fail_RTFA",
+						"targetId": "44c7a566-11ba-4dcb-bd9f-8830046ce882"
+					},
+					{
+						"id": "e1be1810-a336-444f-8ad6-cf25855bafa1",
+						"name": "Pass_RTFA",
+						"targetId": "8110a170-cb9c-4a4c-9725-bac28c6fb908"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"FailedRTFA\"",
+				"id": "44c7a566-11ba-4dcb-bd9f-8830046ce882",
+				"name": "Failed RTFA",
+				"transitions": []
+			},
+			{
+				"parameters": "",
+				"requiredData": 0,
+				"activityConfiguration": "{'ActionType':'GetQuestions'}",
+				"serviceName": "KBAActivity",
+				"serviceUri": "fabric:/KBAActivityService/KBAActivity",
+				"id": "8110a170-cb9c-4a4c-9725-bac28c6fb908",
+				"name": "Get KBA Questions",
+				"transitions": [
+					{
+						"id": "58c03f82-893d-4cd1-941f-eda6641a48c6",
+						"name": "-",
+						"targetId": "c483f6ee-1f6e-4cee-8419-f436cb1efccb"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(KBA_QuestionsCount>=KBA_ExpectedCorrectAnswers, \"EnoughQuestions\",\"NotEnoughQuestions\")",
+				"id": "c483f6ee-1f6e-4cee-8419-f436cb1efccb",
+				"name": "Enough Questions Round 1",
+				"transitions": [
+					{
+						"id": "36b6de4a-83e5-4221-9185-4904d4e5325d",
+						"name": "NotEnoughQuestions",
+						"targetId": "9a9d3b77-5546-40fc-a287-8262b99110dd"
+					},
+					{
+						"id": "c457cdf1-9174-4191-94ad-c0d18fc55ff4",
+						"name": "EnoughQuestions",
+						"targetId": "a63f7173-34ba-418a-bff4-bbd6d5cc60ba"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"FailedToDeliverKBA1\"",
+				"id": "9a9d3b77-5546-40fc-a287-8262b99110dd",
+				"name": "Failed to deliver KBA1",
+				"transitions": []
+			},
+			{
+				"variableName": "KBA_QuestionsBankOpen",
+				"expression": "1",
+				"id": "a63f7173-34ba-418a-bff4-bbd6d5cc60ba",
+				"name": "Open Questions Bank",
+				"transitions": [
+					{
+						"id": "a8b5608c-548a-4e0e-b126-3997942b2122",
+						"name": "-",
+						"targetId": "eaf823db-8c0d-4242-a17a-9604d65a0ffb"
+					}
+				]
+			},
+			{
+				"parameters": "",
+				"requiredData": 6,
+				"activityConfiguration": "{'ActionType':'MarkAnswers'}",
+				"serviceName": "KBAActivity",
+				"serviceUri": "fabric:/KBAActivityService/KBAActivity",
+				"id": "eaf823db-8c0d-4242-a17a-9604d65a0ffb",
+				"name": "KBA 1",
+				"transitions": [
+					{
+						"id": "691325d9-19e1-440f-a1c2-d51479d18d05",
+						"name": "-",
+						"targetId": "81345532-7012-4394-b8a6-9a761d99ce3c"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(KBA_CorrectAnswersCount>=KBA_ExpectedCorrectAnswers, \"Pass_KBA\",\"Fail_KBA\")",
+				"id": "81345532-7012-4394-b8a6-9a761d99ce3c",
+				"name": "KBA 1 Check",
+				"transitions": [
+					{
+						"id": "453f2b55-e025-4c99-8eb2-498f30e7646f",
+						"name": "Fail_KBA",
+						"targetId": "a0df645e-2e77-4861-8ea5-a89227879a02"
+					},
+					{
+						"id": "94773f2d-80cc-40c1-b16d-7b807af78e82",
+						"name": "Pass_KBA",
+						"targetId": "3e5a4670-d784-4b80-9506-5f099255f42b"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(KBA_QuestionsCount>=KBA_MaximumQuestions + KBA_ExpectedCorrectAnswers, \"EnoughQuestions\",\"NotEnoughQuestions\")",
+				"id": "a0df645e-2e77-4861-8ea5-a89227879a02",
+				"name": "Enough Questions Round 2",
+				"transitions": [
+					{
+						"id": "33fb1fec-c498-4216-af3e-7a9d4c9e7461",
+						"name": "NotEnoughQuestions",
+						"targetId": "1ffbf7af-8132-49e7-8e64-f59cd83c565c"
+					},
+					{
+						"id": "7b852f90-3862-4f56-a2de-f8be405ed4d2",
+						"name": "EnoughQuestions",
+						"targetId": "edba442b-d07f-49a6-9434-37511200f91d"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"FailedToDeliverKBA2\"",
+				"id": "1ffbf7af-8132-49e7-8e64-f59cd83c565c",
+				"name": "Failed to deliver KBA2",
+				"transitions": []
+			},
+			{
+				"variableName": "KBA_QuestionsBankOpen",
+				"expression": "1",
+				"id": "edba442b-d07f-49a6-9434-37511200f91d",
+				"name": "Reopen Questions Bank",
+				"transitions": [
+					{
+						"id": "10aa0177-b60b-4efd-baa6-577a236524ae",
+						"name": "-",
+						"targetId": "1a71a90a-58b0-445e-91e9-9c4c4f4fc8f9"
+					}
+				]
+			},
+			{
+				"parameters": "",
+				"requiredData": 6,
+				"activityConfiguration": "{'ActionType':'MarkAnswers'}",
+				"serviceName": "KBAActivity",
+				"serviceUri": "fabric:/KBAActivityService/KBAActivity",
+				"id": "1a71a90a-58b0-445e-91e9-9c4c4f4fc8f9",
+				"name": "KBA 2",
+				"transitions": [
+					{
+						"id": "b141f565-3a78-4383-9b3a-edfcb60a726c",
+						"name": "-",
+						"targetId": "7a35353b-5d7d-44e0-b497-3a7379059964"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(KBA_CorrectAnswersCount>=KBA_ExpectedCorrectAnswers, \"Pass_KBA\",\"Fail_KBA\")",
+				"id": "7a35353b-5d7d-44e0-b497-3a7379059964",
+				"name": "KBA 2 Check",
+				"transitions": [
+					{
+						"id": "0236b08d-1d65-4a14-8b38-d6be77b2626c",
+						"name": "Fail_KBA",
+						"targetId": "3874a33e-052e-4755-a8e4-578138a2f569"
+					},
+					{
+						"id": "0667cc7d-bf16-46fd-80bd-2b8e0be4559f",
+						"name": "Pass_KBA",
+						"targetId": "3e5a4670-d784-4b80-9506-5f099255f42b"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"FailedKBA\"",
+				"id": "3874a33e-052e-4755-a8e4-578138a2f569",
+				"name": "Failed KBA",
+				"transitions": []
+			},
+			{
+				"parameters": "",
+				"requiredData": 0,
+				"activityConfiguration": "",
+				"serviceName": "DeviceRiskActivity",
+				"serviceUri": "fabric:/DeviceRiskActivityService/DeviceRiskActivity",
+				"id": "3e5a4670-d784-4b80-9506-5f099255f42b",
+				"name": "Device Risk",
+				"transitions": [
+					{
+						"id": "47356e88-6dc6-466d-acf6-97899ad19145",
+						"name": "-",
+						"targetId": "06d6061b-9c48-4544-b28f-8076cff1eda6"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(DeviceRisk_Recommendation=\"G\" , \"Pass_Device\", \"Fail_Device\")",
+				"id": "06d6061b-9c48-4544-b28f-8076cff1eda6",
+				"name": "Device Risk Check",
+				"transitions": [
+					{
+						"id": "fd9edd33-4f48-48ca-afc9-245de780a44f",
+						"name": "Fail_Device",
+						"targetId": "dadce21a-788b-49f5-b043-db82df1d8cfc"
+					},
+					{
+						"id": "50a907c8-4199-486f-8a5e-0d2b38fd5cfb",
+						"name": "Pass_Device",
+						"targetId": "7e689a28-131b-496a-b48c-957dbcfb20ef"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"FailedDeviceRisk\"",
+				"id": "dadce21a-788b-49f5-b043-db82df1d8cfc",
+				"name": "Failed Device Risk",
+				"transitions": []
+			},
+			{
+				"parameters": "",
+				"requiredData": 0,
+				"activityConfiguration": "",
+				"serviceName": "EmailRiskActivity",
+				"serviceUri": "fabric:/EmailRiskActivityService/EmailRiskActivity",
+				"id": "7e689a28-131b-496a-b48c-957dbcfb20ef",
+				"name": "Email Risk",
+				"transitions": [
+					{
+						"id": "29faf3c9-97ef-4ad4-8851-af89f6647b9a",
+						"name": "-",
+						"targetId": "d1a1dbaa-d52b-4c10-bca5-52716c525186"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(EmailRisk_Level=\"Very Low\" or EmailRisk_Level=\"Low\" or EmailRisk_Level=\"Neutral\", \"Pass_Email\", \"Fail_Email\")",
+				"id": "d1a1dbaa-d52b-4c10-bca5-52716c525186",
+				"name": "Email Risk Check",
+				"transitions": [
+					{
+						"id": "5f43b65a-1517-4a6d-a4ac-c363d69289df",
+						"name": "Fail_Email",
+						"targetId": "19def7d9-7f57-4add-9512-f9d15cddf4ae"
+					},
+					{
+						"id": "e3c4573b-4756-4d0e-8b5a-184456e2adf0",
+						"name": "Pass_Email",
+						"targetId": "72005c0a-d808-4816-9a7d-c946282d2437"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"FailedEmailRisk\"",
+				"id": "19def7d9-7f57-4add-9512-f9d15cddf4ae",
+				"name": "Failed Email Risk",
+				"transitions": []
+			},
+			{
+				"parameters": "",
+				"requiredData": 0,
+				"activityConfiguration": "",
+				"serviceName": "MobileRiskActivity",
+				"serviceUri": "fabric:/MobileRiskActivityService/MobileRiskActivity",
+				"id": "72005c0a-d808-4816-9a7d-c946282d2437",
+				"name": "Mobile Risk",
+				"transitions": [
+					{
+						"id": "5cb595c4-9fa0-4206-8797-3e49e6e1a4e0",
+						"name": "-",
+						"targetId": "89dff4d7-e7bc-46a9-99e5-19a12fe4633a"
+					}
+				]
+			},
+			{
+				"transitionSelectorExpression": "If(MobileRisk_Level= \"Low\" or MobileRisk_Level = \"MediumLow\" or MobileRisk_Level=\"Medium\", \"Pass_Mobile\", \"Fail_Mobile\")",
+				"id": "89dff4d7-e7bc-46a9-99e5-19a12fe4633a",
+				"name": "Mobile Risk Check",
+				"transitions": [
+					{
+						"id": "ca846b41-ef38-47a3-8cc4-cf353abbe949",
+						"name": "Fail_Mobile",
+						"targetId": "967e0231-d835-42af-8eec-35f47b499351"
+					},
+					{
+						"id": "c2928e8b-fd6b-41c6-ba73-26b799b0a716",
+						"name": "Pass_Mobile",
+						"targetId": "fc39143a-ad6f-48a3-9159-e01ca05f4069"
+					}
+				]
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"FailedMobileRisk\"",
+				"id": "967e0231-d835-42af-8eec-35f47b499351",
+				"name": "Failed Mobile Risk",
+				"transitions": []
+			},
+			{
+				"variableName": "Workflow_Outcome",
+				"expression": "\"Gold\"",
+				"id": "fc39143a-ad6f-48a3-9159-e01ca05f4069",
+				"name": "Gold",
+				"transitions": []
+			}
+		],
+		"name": "Non Trusted No Card Journey",
+		"startActivityId": "df7049eb-0f33-4f39-afb4-c137638f2a2a"
+	},
+	"id": "af3384c5-43c4-44e3-8dbc-14fd3432c627"
+}
