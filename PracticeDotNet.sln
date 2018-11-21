@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequenceNoElements", "Seque
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhibernateWithRetry", "RetryAttemptsDemo\NhibernateWithRetry.csproj", "{29029E58-B6BE-4CA7-991A-195BAD1A43FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateTestUsers", "GenerateTestUsers\GenerateTestUsers.csproj", "{BB92F508-D05E-45BB-AE28-B44B2235F260}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuartzSampleFromConfig", "QuartzSampleFromConfig\QuartzSampleFromConfig.csproj", "{6E6D2AD8-73A2-4860-99F1-E3D8144B7E31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{29029E58-B6BE-4CA7-991A-195BAD1A43FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29029E58-B6BE-4CA7-991A-195BAD1A43FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29029E58-B6BE-4CA7-991A-195BAD1A43FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB92F508-D05E-45BB-AE28-B44B2235F260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB92F508-D05E-45BB-AE28-B44B2235F260}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB92F508-D05E-45BB-AE28-B44B2235F260}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB92F508-D05E-45BB-AE28-B44B2235F260}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E6D2AD8-73A2-4860-99F1-E3D8144B7E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E6D2AD8-73A2-4860-99F1-E3D8144B7E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E6D2AD8-73A2-4860-99F1-E3D8144B7E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E6D2AD8-73A2-4860-99F1-E3D8144B7E31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
