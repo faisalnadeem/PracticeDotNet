@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateTestUsers", "Genera
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuartzSampleFromConfig", "QuartzSampleFromConfig\QuartzSampleFromConfig.csproj", "{6E6D2AD8-73A2-4860-99F1-E3D8144B7E31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiThreadingSample", "MultiThreadingSample\MultiThreadingSample.csproj", "{E06AC4DE-7A4A-40F2-BCE9-958CA90C9799}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{6E6D2AD8-73A2-4860-99F1-E3D8144B7E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E6D2AD8-73A2-4860-99F1-E3D8144B7E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E6D2AD8-73A2-4860-99F1-E3D8144B7E31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E06AC4DE-7A4A-40F2-BCE9-958CA90C9799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E06AC4DE-7A4A-40F2-BCE9-958CA90C9799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E06AC4DE-7A4A-40F2-BCE9-958CA90C9799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E06AC4DE-7A4A-40F2-BCE9-958CA90C9799}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
