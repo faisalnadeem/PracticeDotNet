@@ -13,19 +13,69 @@ namespace TaskTimeout
         static void Main(string[] args)
         {
 
-            int timeout = 1000;
-            TimeSpan timepSpan = new TimeSpan(0,0, 4);
-            var delayTask = Task.Delay(timeout);
-            var task = CountToAsync();
-            var resutl = task.TimeoutAfter(timepSpan).Result;
+	        var counter = 0; 
+	        var tokenSource2 = new CancellationTokenSource();
+	        CancellationToken ct = tokenSource2.Token;
 
-            var addTask = AddTask(10, 5).TimeoutAfter(timepSpan);
-            var subtractTask = AddTask(10, 5).TimeoutAfter(timepSpan);
-            var multiplyTask = AddTask(10, 5).TimeoutAfter(timepSpan);
-            
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
-        }
+	        var task = Task.Factory.StartNew(() =>
+	        {
+
+		        // Were we already canceled?
+		        ct.ThrowIfCancellationRequested();
+
+		        bool moreToDo = true;
+		        while (moreToDo)
+		        {
+			        counter++;
+					Console.WriteLine("wroking...."+ counter);
+			        // Poll on this property if you have to do
+			        // other cleanup before throwing.
+			        if (ct.IsCancellationRequested)
+			        {
+						Console.WriteLine("cancelling....");
+				        // Clean up here, then...
+				        ct.ThrowIfCancellationRequested();
+			        }
+
+			        if (counter >= 900)
+			        {
+				        tokenSource2.Cancel();
+					}
+
+		        }
+	        }, tokenSource2.Token); // Pass same token to StartNew.
+
+
+	        // Just continue on this thread, or Wait/WaitAll with try-catch:
+	        try
+	        {
+		        task.Wait();
+	        }
+	        catch (AggregateException e)
+	        {
+		        foreach (var v in e.InnerExceptions)
+			        Console.WriteLine(e.Message + " " + v.Message);
+	        }
+	        finally
+	        {
+		        tokenSource2.Dispose();
+	        }
+
+	        Console.ReadKey();
+			/*
+						int timeout = 1000;
+						TimeSpan timepSpan = new TimeSpan(0,0, 4);
+						var delayTask = Task.Delay(timeout);
+						var task = CountToAsync();
+						var resutl = task.TimeoutAfter(timepSpan).Result;
+
+						var addTask = AddTask(10, 5).TimeoutAfter(timepSpan);
+						var subtractTask = AddTask(10, 5).TimeoutAfter(timepSpan);
+						var multiplyTask = AddTask(10, 5).TimeoutAfter(timepSpan);
+
+						Console.WriteLine("Press any key to exit");
+						Console.ReadKey();*/
+		}
 
         private static async Task<int> AddTask(int x, int y)
         {

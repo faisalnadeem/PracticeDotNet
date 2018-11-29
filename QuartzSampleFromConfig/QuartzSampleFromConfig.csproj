@@ -57,14 +57,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Class2.cs" />
+    <Compile Include="ApplicationServerEngine.cs" />
+    <Compile Include="ApplicationServerHost.cs" />
+    <Compile Include="EmailEngine.cs" />
+    <Compile Include="Helpers\ConsoleOutputHelper.cs" />
+    <Compile Include="Helpers\TraceListenerHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\SqlDataHelper.cs" />
     <Compile Include="Jobs\PopulatingEmailQueueTableJob.cs" />
     <Compile Include="Jobs\ConsumeEmailQueueTableJob.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuartzSchedulerEngine.cs" />
+    <Compile Include="SelectUpdateInlineTransaction.cs" />
+    <Compile Include="SelectUpdateInOneTransaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="quartz-jobs.config">
@@ -74,7 +80,15 @@
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EmailManager.Local\EmailManager.Local.csproj">
+      <Project>{4ec0bf7d-e50b-43c2-b510-90c6e1747583}</Project>
+      <Name>EmailManager.Local</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Configuration;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -15,62 +15,134 @@ namespace QuartzSampleFromConfig
 {
 	class Program
 	{
+		static string _connectionString = @"Server=PLLLP9435;initial catalog=EmailPoc;Integrated Security=true";
 		static void Main(string[] args)
 		{
-			StartConsoleOutputToFile();
-			StartThreads();
-			//for (int i = 1; i <= 5; i++)
-			//{
-			//	new Thread(TheClub.Enter).Start(i);
-			//}
+			//Console.WriteLine("Writing out to file - C:/sftptemp/ConsoleOutputToFile.txt");
+			//StartConsoleOutputToFile();
+			var allThreadsCulture = new CultureInfo(ConfigurationManager.AppSettings["AllThreadsCulture"]);
+			Thread.CurrentThread.CurrentCulture = allThreadsCulture;
+			Thread.CurrentThread.CurrentUICulture = allThreadsCulture;
+			CultureInfo.DefaultThreadCurrentCulture = allThreadsCulture;
+			CultureInfo.DefaultThreadCurrentUICulture = allThreadsCulture;
 
-			//SimpleThreadCancellation.Test();
-			Console.ReadLine();
-			return;
-			//var i = 1;
-			//while (true)
-			//{
-			//	Task.Factory.StartNew(() => ConsumeEmailRow("T-" + i));
-			//	i++;
-			//}
+			var runner = new ApplicationServerHost(new ApplicationServerEngine());
+			runner.Execute();
 
-			var task1 = Task.Factory.StartNew(() => PerformTask("T-1"));
-			var task2 = Task.Factory.StartNew(() => PerformTask("T-2"));
-			var task3 = Task.Factory.StartNew(() => PerformTask("T-3"));
-			var task4 = Task.Factory.StartNew(() => PerformTask("T-4"));
-			var task5 = Task.Factory.StartNew(() => PerformTask("T-5"));
-
-			Task.WaitAll(task1, task2, task3, task4, task5);
-			Console.WriteLine("All task finished");
-
-			//var runner = new ApplicationServerHost(new ApplicationServerEngine());
-			//runner.Execute();
+			//StopConsoleOutputToFile();
 			Console.WriteLine("Press any key to exit...");
-			Console.ReadLine();
+			Console.ReadKey();
 		}
 
 		private static void StopConsoleOutputToFile()
 		{
 			Console.SetOut(Console.Out);
 		}
+
 		private static void StartConsoleOutputToFile()
 		{
+			var fileName = "C:/sftptemp/ConsoleOutputToFile.txt";
+			if(File.Exists(fileName))
+				File.Delete(fileName);
+
 			FileStream ostrm;
 			StreamWriter writer;
 			try
 			{
-				ostrm = new FileStream("C:/sftptemp/ConsoleOutputToFile.txt", FileMode.OpenOrCreate, FileAccess.Write);
+				ostrm = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
 				writer = new StreamWriter(ostrm);
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Cannot open ConsoleOutputToFile.txt for writing");
-				Console.WriteLine(e.Message);
+				Trace.WriteLine("Cannot open ConsoleOutputToFile.txt for writing");
+				Trace.WriteLine(e.Message);
 				return;
 			}
 			Console.SetOut(writer);
 		}
 
+		private static void StartTraceListeners()
+		{
+			Trace.Listeners.Clear();
+			var tempFilePath = Path.Combine(Path.GetTempPath(), AppDomain.CurrentDomain.FriendlyName);
+			var fileName = "C:/sftptemp/TextWriterConsoleOutput.log";
+			var textWriterTraceListener =
+				new TextWriterTraceListener(fileName, "textWriterListener")
+				{
+					Name = "TextWriterListener",
+					TraceOutputOptions = TraceOptions.ThreadId | TraceOptions.DateTime
+				};
+
+			var consoleTraceListener = new ConsoleTraceListener(false);
+			consoleTraceListener.TraceOutputOptions = TraceOptions.DateTime;
+
+			Trace.Listeners.Add(textWriterTraceListener);
+			Trace.Listeners.Add(consoleTraceListener);
+			Trace.AutoFlush = true;
+
+			Trace.WriteLine($"Started console listener and text writer listener. File path for text writer {tempFilePath}");
+		}
+
+		private static void StartTasks()
+		{
+			var task1 = Task.Factory.StartNew(() =>
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+					
+						var emailRow = SqlDataHelper.GetNextUserIdToSendEmail(connection);
+						while (emailRow != null)
+						{
+							ConsumeEmailRow("T-1", emailRow, connection);
+							emailRow = SqlDataHelper.GetNextUserIdToSendEmail(connection);
+						}
+				}
+			});
+
+			var task2 = Task.Factory.StartNew(() =>
+			{
+				using (var connection = new SqlConnection(_connectionString))
+				{
+					connection.Open();
+						var emailRow = SqlDataHelper.GetNextUserIdToSendEmail(connection);
+						while (emailRow != null)
+						{
+							ConsumeEmailRow("T-2", emailRow, connection);
+							emailRow = SqlDataHelper.GetNextUserIdToSendEmail(connection);
+						}
+				}
+			});
+
+			//var task3 = Task.Factory.StartNew(() =>
+			//{
+			//	using (var connection = new SqlConnection(_connectionString))
+			//	{
+			//		connection.Open();
+			//		using (var tx = connection.BeginTransaction())
+			//		{
+
+			//			var emailRow = SqlDataHelper.GetNextUserIdToSendEmail(connection);
+			//			while (emailRow != null)
+			//			{
+			//				ConsumeEmailRow("T-3", emailRow, connection);
+			//				emailRow = SqlDataHelper.GetNextUserIdToSendEmail(connection);
+			//			}
+
+			//			tx.Commit();
+			//		}
+			//	}
+			//});
+
+			//var task2 = Task.Factory.StartNew(() => ConsumeEmailRow("Thread-2", SqlDataHelper.GetNextUserIdToSendEmail()));
+			//var task3 = Task.Factory.StartNew(() => ConsumeEmailRow("Thread-3", SqlDataHelper.GetNextUserIdToSendEmail()));
+			//var task4 = Task.Factory.StartNew(() => ConsumeEmailRow("Thread-4", SqlDataHelper.GetNextUserIdToSendEmail()));
+			//var task5 = Task.Factory.StartNew(() => ConsumeEmailRow("Thread-5", SqlDataHelper.GetNextUserIdToSendEmail()));
+
+			Task.WaitAll(task1, task2);
+			Trace.WriteLine("All task finished");
+
+		}
 		private static void StartThreads()
 		{
 			var t1 = new Thread(emailRow =>
@@ -78,7 +150,7 @@ namespace QuartzSampleFromConfig
 				var numberOfSeconds = 0;
 				while (emailRow != null) //< Convert.ToInt32(p))
 				{
-					Console.WriteLine("T1: Sleeping for 0.5 second");
+					Trace.WriteLine("T1: Sleeping for 0.5 second");
 					Thread.Sleep(1000);
 					numberOfSeconds++;
 					ConsumeEmailRow("T1", (EmailQueue) emailRow);
@@ -86,7 +158,7 @@ namespace QuartzSampleFromConfig
 					emailRow = SqlDataHelper.GetNextUserIdToSendEmail();
 				}
 
-				Console.WriteLine("T1: I ran for {0} seconds", numberOfSeconds);
+				Trace.WriteLine($"T1: I ran for {numberOfSeconds} seconds");
 			});
 
 			var t2 = new Thread(emailRow =>
@@ -94,7 +166,7 @@ namespace QuartzSampleFromConfig
 				var numberOfSeconds = 0;
 				while (emailRow != null) //< Convert.ToInt32(p))
 				{
-					Console.WriteLine("T2: Sleeping for 0.5 second");
+					Trace.WriteLine("T2: Sleeping for 0.5 second");
 					Thread.Sleep(1000);
 					numberOfSeconds++;
 					ConsumeEmailRow("T2", (EmailQueue) emailRow);
@@ -102,7 +174,7 @@ namespace QuartzSampleFromConfig
 					emailRow = SqlDataHelper.GetNextUserIdToSendEmail();
 				}
 
-				Console.WriteLine("T2: I ran for {0} seconds", numberOfSeconds);
+				Trace.WriteLine($"T2: I ran for {numberOfSeconds} seconds");
 			});
 
 			var t3 = new Thread(emailRow =>
@@ -110,7 +182,7 @@ namespace QuartzSampleFromConfig
 				var numberOfSeconds = 0;
 				while (emailRow != null) //< Convert.ToInt32(p))
 				{
-					Console.WriteLine("T3: Sleeping for 0.5 second");
+					Trace.WriteLine("T3: Sleeping for 0.5 second");
 					Thread.Sleep(1000);
 					numberOfSeconds++;
 					ConsumeEmailRow("T3", (EmailQueue) emailRow);
@@ -118,7 +190,7 @@ namespace QuartzSampleFromConfig
 					emailRow = SqlDataHelper.GetNextUserIdToSendEmail();
 				}
 
-				Console.WriteLine("T3: I ran for {0} seconds", numberOfSeconds);
+				Trace.WriteLine($"T3: I ran for {numberOfSeconds} seconds");
 			});
 
 			t1.Start(SqlDataHelper.GetNextUserIdToSendEmail());
@@ -141,36 +213,52 @@ namespace QuartzSampleFromConfig
 
 			var emailRow = SqlDataHelper.GetNextUserIdToSendEmail();
 			if (emailRow == null) return;
-			Console.WriteLine($"{DateTime.Now}: {threadName} Sending email to user Id: {emailRow.UserId}");
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Sending email to user Id: {emailRow.UserId}");
 			//EmailHelper.SendEmail();
-			Console.WriteLine($"{DateTime.Now}: {threadName} Email sent to user Id: {emailRow.UserId}");
-			Console.WriteLine($"{DateTime.Now}: {threadName} Updatnig row Id:{emailRow.Id} user Id:{emailRow.UserId}");
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Email sent to user Id: {emailRow.UserId}");
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Updatnig row Id:{emailRow.Id} user Id:{emailRow.UserId}");
 			SqlDataHelper.MarkAsConsumedByEmailQueueId(emailRow.Id);
-			Console.WriteLine($"{DateTime.Now}: {threadName} Done updating row Id:{emailRow.Id} user Id: {emailRow.UserId}");
+			SqlDataHelper.MarkAsConsumedByEmailQueueIdHistory(emailRow.Id, threadName);
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Done updating row Id:{emailRow.Id} user Id: {emailRow.UserId}");
 		}
+
 		private static void ConsumeEmailRow(string threadName, EmailQueue emailRow)//, EmailQueue emailRow)
 		{
 			//var emailRow = SqlDataHelper.GetNextUserIdToSendEmail();
 			if (emailRow == null) return;
-			Console.WriteLine($"{DateTime.Now}: {threadName} Sending email to user Id: {emailRow.UserId}");
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Sending email to user Id: {emailRow.UserId}");
 			//EmailHelper.SendEmail();
-			Console.WriteLine($"{DateTime.Now}: {threadName} Email sent to user Id: {emailRow.UserId}");
-			Console.WriteLine($"{DateTime.Now}: {threadName} Updatnig row Id:{emailRow.Id} user Id:{emailRow.UserId}");
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Email sent to user Id: {emailRow.UserId}");
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Updatnig row Id:{emailRow.Id} user Id:{emailRow.UserId}");
 			SqlDataHelper.MarkAsConsumedByEmailQueueId(emailRow.Id);
-			Console.WriteLine($"{DateTime.Now}: {threadName} Done updating row Id:{emailRow.Id} user Id: {emailRow.UserId}");
+			SqlDataHelper.MarkAsConsumedByEmailQueueIdHistory(emailRow.Id, threadName);
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Done updating row Id:{emailRow.Id} user Id: {emailRow.UserId}");
+		}
+
+		private static void ConsumeEmailRow(string threadName, EmailQueue emailRow, SqlConnection connection)//, EmailQueue emailRow)
+		{
+			//var emailRow = SqlDataHelper.GetNextUserIdToSendEmail();
+			if (emailRow == null) return;
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Sending email to user Id: {emailRow.UserId}");
+			//EmailHelper.SendEmail();
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Email sent to user Id: {emailRow.UserId}");
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Updatnig row Id:{emailRow.Id} user Id:{emailRow.UserId}");
+			SqlDataHelper.MarkAsConsumedByEmailQueueId(emailRow.Id, connection);
+			SqlDataHelper.MarkAsConsumedByEmailQueueIdHistory(emailRow.Id, threadName, connection);
+			Trace.WriteLine($"{DateTime.Now}: {threadName} Done updating row Id:{emailRow.Id} user Id: {emailRow.UserId}");
 		}
 
 		public static void StartSimpleCanellationTest(object obj)
 		{
 			var ct = (CancellationToken)obj;
-			Console.WriteLine("StartSimpleCanellationTest is running on another thread.");
+			Trace.WriteLine("StartSimpleCanellationTest is running on another thread.");
 
 			// Simulate work that can be canceled.
 			while (!ct.IsCancellationRequested)
 			{
 				Thread.SpinWait(50000);
 			}
-			Console.WriteLine("The worker thread has been canceled. Press any key to exit.");
+			Trace.WriteLine("The worker thread has been canceled. Press any key to exit.");
 			Console.ReadKey(true);
 		}
 	}
@@ -181,11 +269,11 @@ namespace QuartzSampleFromConfig
 	
 		public static void Enter(object id)
 		{
-			Console.WriteLine(id + " wants to enter");
+			Trace.WriteLine(id + " wants to enter");
 			//_sem.Wait();
-			Console.WriteLine(id + " is in!");           // Only three threads
+			Trace.WriteLine(id + " is in!");           // Only three threads
 			//Thread.Sleep(1000 * (int)id);               // can be here at
-			Console.WriteLine(id + " is leaving");       // a time.
+			Trace.WriteLine(id + " is leaving");       // a time.
 			_sem.Release();
 		}
 	}
@@ -197,7 +285,7 @@ namespace QuartzSampleFromConfig
 			// The Simple class controls access to the token source.
 			var cts = new CancellationTokenSource();
 
-			Console.WriteLine("Press 'C' to terminate the application...\n");
+			Trace.WriteLine("Press 'C' to terminate the application...\n");
 			// Allow the UI thread to capture the token source, so that it
 			// can issue the cancel command.
 			var t1 = new Thread(() =>
@@ -207,7 +295,7 @@ namespace QuartzSampleFromConfig
 				var randomvalue = 1;
 				while (randomvalue != 0)
 				{
-					Console.WriteLine("Random value is " + randomvalue);
+					Trace.WriteLine("Random value is " + randomvalue);
 					if (randomvalue == 0)
 						cts.Cancel();
 				
@@ -247,7 +335,7 @@ namespace QuartzSampleFromConfig
 				var iteration = taskCtr + 1;
 				tasks.Add(factory.StartNew(() =>
 				{
-					Console.WriteLine("Loop " + taskCtr);
+					Trace.WriteLine("Loop " + taskCtr);
 					int value;
 					var values = new int[10];
 					for (var ctr = 1; ctr <= 10; ctr++)
@@ -259,11 +347,11 @@ namespace QuartzSampleFromConfig
 						if (value == 0)
 						{
 							source.Cancel();
-							Console.WriteLine("Cancelling at task {0}", iteration);
+							Trace.WriteLine($"Cancelling at task {iteration}");
 							break;
 						}
 						values[ctr - 1] = value;
-						Console.WriteLine($"Vallue at {ctr - 1} is {value}");
+						Trace.WriteLine($"Vallue at {ctr - 1} is {value}");
 					}
 					return values;
 				}, token));
@@ -274,7 +362,7 @@ namespace QuartzSampleFromConfig
 				var fTask = factory.ContinueWhenAll(tasks.ToArray(),
 															 (results) =>
 															 {
-																 Console.WriteLine("Calculating overall mean...");
+																 Trace.WriteLine("Calculating overall mean...");
 																 long sum = 0;
 																 int n = 0;
 																 foreach (var t in results)
@@ -287,17 +375,17 @@ namespace QuartzSampleFromConfig
 																 }
 																 return sum / (double)n;
 															 }, token);
-				Console.WriteLine("The mean is {0}.", fTask.Result);
+				Trace.WriteLine($"The mean is {fTask.Result}.");
 			}
 			catch (AggregateException ae)
 			{
 				foreach (Exception e in ae.InnerExceptions)
 				{
 					if (e is TaskCanceledException)
-						Console.WriteLine("Unable to compute mean: {0}",
+						Trace.WriteLine("Unable to compute mean: {0}",
 										  ((TaskCanceledException)e).Message);
 					else
-						Console.WriteLine("Exception: " + e.GetType().Name);
+						Trace.WriteLine("Exception: " + e.GetType().Name);
 				}
 			}
 			finally
@@ -316,7 +404,7 @@ namespace QuartzSampleFromConfig
 
 		private int AddTask(int x, int y)
 		{
-			Console.WriteLine($"Adding numbers at {DateTime.Now}: {x} + {y} : {x + y}");
+			Trace.WriteLine($"Adding numbers at {DateTime.Now}: {x} + {y} : {x + y}");
 			//await Task.Delay(TimeSpan.FromSeconds(5));
 			return x + y;
 		}

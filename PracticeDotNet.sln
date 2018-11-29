@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuartzSampleFromConfig", "Q
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiThreadingSample", "MultiThreadingSample\MultiThreadingSample.csproj", "{E06AC4DE-7A4A-40F2-BCE9-958CA90C9799}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailManager.Local", "EmailManager.Local\EmailManager.Local.csproj", "{4EC0BF7D-E50B-43C2-B510-90C6E1747583}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraceListenersDemo", "TraceListenersDemo\TraceListenersDemo.csproj", "{D3716FE7-CFA6-41BA-976F-9C1053882EFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{E06AC4DE-7A4A-40F2-BCE9-958CA90C9799}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E06AC4DE-7A4A-40F2-BCE9-958CA90C9799}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E06AC4DE-7A4A-40F2-BCE9-958CA90C9799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EC0BF7D-E50B-43C2-B510-90C6E1747583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EC0BF7D-E50B-43C2-B510-90C6E1747583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EC0BF7D-E50B-43C2-B510-90C6E1747583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EC0BF7D-E50B-43C2-B510-90C6E1747583}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3716FE7-CFA6-41BA-976F-9C1053882EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3716FE7-CFA6-41BA-976F-9C1053882EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3716FE7-CFA6-41BA-976F-9C1053882EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3716FE7-CFA6-41BA-976F-9C1053882EFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

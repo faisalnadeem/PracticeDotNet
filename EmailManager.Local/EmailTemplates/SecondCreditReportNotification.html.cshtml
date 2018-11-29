@@ -1,0 +1,128 @@
+﻿@using System.Collections.Generic
+@using EmailManager.Local
+
+@EmailHelper.BeginResponsiveTemplate(null, new Dictionary<string, string> { { "width", "612" } })
+<style type="text/css">
+    a {
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 1em;
+        font-family: Arial, Heveltica, sans-serif;
+    }
+
+        a:visited {
+            color: #ffffff;
+        }
+</style>
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="612" style="border-collapse: collapse;" bgcolor="#EFEFF0">
+    <tr valign="top">
+        <td background="@EmailHelper.GetImageUrl(Model.RootUrl, "/CreditReportNotification/email-background.png")" bgcolor="#781D7E" width="612" height="258" style="width: 612px; height: 258px; background-size: 612px 258px; background-repeat: no-repeat;display: inline-block;background-image:url(@EmailHelper.GetImageUrl(Model.RootUrl, "/CreditReportNotification/email-background.png"))">
+            <!--[if gte mso 9]>
+                <v:image xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width: 612px; height: 258px; background-size: 612px 258px; background-repeat: no-repeat;display: inline-block;" src="@EmailHelper.GetImageUrl(Model.RootUrl, "/CreditReportNotification/email-background.png")" />
+                <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width: 612px; height: 258px; background-size: 612px 258px; background-repeat: no-repeat; display: inline-block;position: absolute;">
+                <v:fill type="tile" opacity="0%" color="#781D7E"/>
+                <v:textbox inset="0,0,0,0">
+            <![endif]-->
+            @EmailHelper.HeaderCreditReport(Model)
+            <!--[if gte mso 9]>
+                </v:textbox>
+                </v:fill>
+                </v:rect>
+                </v:image>
+            <![endif]-->
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; padding: 10px 0 10px 0;">
+            <font color="#000000" face="Arial, Helvetica, sans-serif" size="4"><strong>Discover what you can do to improve your score</strong></font>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 20px 60px 20px 60px">
+            <table border="0" cellpadding="0" cellspacing="0" align="center">
+                <tr>
+                    <td style="padding: 0 0 30px 0;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="490" style="border-collapse: collapse;" height="230" bgcolor="#ffffff">
+                            <tr>
+                                <td width="223px">
+                                    @EmailHelper.Image(Model.RootUrl, "CreditReportNotification/top-credit-mistakes.png", "223", "230", "img")
+                                </td>
+                                <td width="267px">
+                                    <table border="0" cellpadding="0" style="border-collapse: collapse">
+                                        <tr><td style="padding: 5px 15px 5px 15px;"><font color="#848484" face="Arial, Helvetica, sans-serif" size="1"> CREDIT SCORE</font> </td></tr>
+                                        <tr><td style="padding: 5px 15px 5px 15px;"><font color="#781D7E" face="Arial, Helvetica, sans-serif" size="2"><strong>Top credit mistakes and how to solve them</strong></font></td></tr>
+                                        <tr><td style="padding: 5px 15px 5px 15px;"><font color="#848484" face="Arial, Helvetica, sans-serif" size="2">Improving your credit score is an important first step to getting the life you want, demonstrating to lenders and employers that you make</font></td></tr>
+                                        <tr>
+                                            <td style="padding: 5px 15px 5px 15px;">
+                                                @EmailHelper.OpenTrackingLink(Model, "blog_link_top_credit_mistakes", "http://www.blog.noddle.co.uk/top-credit-mistakes-and-how-to-solve-them/")
+                                                    <center>@EmailHelper.Image(Model.RootUrl, "CreditReportNotification/button-read-more.png", null, "30", "Read more")</center>
+                                                @EmailHelper.CloseLink()
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" cellpadding="0" cellspacing="0" width="490" height="230" style="border-collapse: collapse;" bgcolor="#ffffff">
+                            <tr>
+                                <td width="267px">
+                                    <table border="0" cellpadding="0" style="border-collapse: collapse">
+                                        <tr><td style="padding: 5px 15px 5px 15px;"><font color="#848484" face="Arial, Helvetica, sans-serif" size="1"> CREDIT SCORE</font> </td></tr>
+                                        <tr><td style="padding: 5px 15px 5px 15px;"><font color="#781D7E" face="Arial, Helvetica, sans-serif" size="2"><strong>How long will it take me to improve my score and how hard will it be?</strong></font></td></tr>
+                                        <tr><td style="padding: 5px 15px 5px 15px;"><font color="#848484" face="Arial, Helvetica, sans-serif" size="2">When you realise your score is on the lower end of the scale, you're likely to have two immediate thoughts after you've asked the obvious question of</font></td></tr>
+                                        <tr>
+                                            <td style="padding: 5px 15px 5px 15px;">
+                                                @EmailHelper.OpenTrackingLink(Model, "blog_link_how_long", "http://www.blog.noddle.co.uk/how-long-will-it-take-me-to-improve-my-score-and-how-hard-will-it-be/")
+                                                    <center>@EmailHelper.Image(Model.RootUrl, "CreditReportNotification/button-read-more.png", null, "30", "Read more")</center>
+                                                @EmailHelper.CloseLink()
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td width="223px">
+                                    @EmailHelper.Image(Model.RootUrl, "CreditReportNotification/how-long.png", "223", "230", "img")
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#ffffff">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" width="490" style="border-collapse: collapse;">
+                @EmailHelper.TrustPilot(Model.RootUrl)
+                <tr>
+                    <td>
+                        <font color="#6a6b75" face="Arial, Helvetica, sans-serif" size="2">
+                            <span style="text-decoration: none; color: #6a6b75;">
+                                This email was sent to <a href="mailto:@Model.To" style="text-decoration: underline; color: #6a6b75"><font color="#6a6b75">@Model.To</font></a>
+                                <br />
+                                <br />
+                                Please add Noddle <a href="mailto:@Model.NoReplyEmail" style="text-decoration: underline; color: #6a6b75"><font color="#6a6b75">@Model.NoReplyEmail</font></a> to your address or safe list to make sure you get our emails.
+                                <br />
+                                <br />
+                                Noddle is a trading name of Callcredit Consumer Ltd, registered in England and Wales number 7891157. Registered office: One Park Lane, Leeds, West Yorkshire, LS3 1EP
+                                <br />
+                                Callcredit Consumer Limited is authorised and regulated by the Financial Conduct Authority under registration number 737743. Authorisation can be checked on the Financial Services Register at <a href="https://register.fca.org.uk/" style="text-decoration: none; color: #6a6b75">https://register.fca.org.uk/</a>.
+                                <br />
+                                <br />
+                                To see our Privacy Notice @EmailHelper.OpenTrackingLink(Model, "privacy_policy_link", "/privacy-notice")<font style="text-decoration: underline; color: #6a6b75"> click here</font>@EmailHelper.CloseLink(). &copy; Noddle. All rights Reserved
+                                <br />
+                                <br />
+                            </span>
+                        </font>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+@EmailHelper.InsertOpeningTrackImage(Model)
+
+@EmailHelper.EndResponsiveTemplate()
