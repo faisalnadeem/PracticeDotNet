@@ -79,20 +79,7 @@ namespace QuartzSampleFromConfig
 		}
 
 		private static void ConsumeQueue(string threadName, CancellationToken token)
-		{
-			//try
-			//{
-
-			//}
-			//catch ()
-			//{
-
-			//}
-			//catch (Exception e)
-			//{
-			//	Console.WriteLine(e);
-			//	throw;
-			//}
+		{		
 			token.ThrowIfCancellationRequested();
 
 			var emailRow = SqlDataHelper.SelectAndUpdateNextUserIdToSendEmailInlineTxn(threadName);
@@ -106,15 +93,21 @@ namespace QuartzSampleFromConfig
 						StopTasksWithCancellationToken();
 				try
 				{
-					if(emailRow != null)
+					if (emailRow != null)
+					{
 						EmailHelper.SendEmail(threadName, emailRow);
+						SqlDataHelper.MarkAsConsumedByEmailQueueId(emailRow.Id);
+					}
 				}
 				catch (Exception e)
 				{
-					Trace.WriteLine(
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine(
 						$"{DateTime.Now}: Exception occurred while sending email. Exception: {e}");
+					Console.ForegroundColor = ConsoleColor.White;
 					if (emailRow != null)
-						SqlDataHelper.MarkAsErroredByEmailQueueId(emailRow.Id);
+						SqlDataHelper.MarkAsErroredOrRetryByEmailQueueId(emailRow.Id);
+						//SqlDataHelper.MarkAsErroredByEmailQueueId(emailRow.Id);
 				}
 
 				if (token.IsCancellationRequested)

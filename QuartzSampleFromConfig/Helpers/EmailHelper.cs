@@ -18,7 +18,7 @@ namespace QuartzSampleFromConfig.Helpers
 				Thread.Sleep(300);
 				var messageForException = emailRow.Id % 17 == 0 ? "throwexceptionrequest" : "";
 				EmailManager.Local.EmailManager.SendEmail($"{DateTime.Now}: Email sent UserId:{emailRow.UserId} Thread:{threadName} EmailId {emailRow.Id}.{messageForException}");
-				Trace.WriteLine($"{DateTime.Now}: Email sent UserId:{emailRow.UserId} Thread:{threadName} EmailId {emailRow.Id}");
+				Console.WriteLine($"{DateTime.Now}: Email sent UserId:{emailRow.UserId} Thread:{threadName} EmailId {emailRow.Id}");
 			}
 			catch (Exception e)
 			{

@@ -64,6 +64,7 @@
     <Compile Include="Helpers\TraceListenerHelper.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\SqlDataHelper.cs" />
+    <Compile Include="Jobs\CleanEmailQueueTableJob.cs" />
     <Compile Include="Jobs\PopulatingEmailQueueTableJob.cs" />
     <Compile Include="Jobs\ConsumeEmailQueueTableJob.cs" />
     <Compile Include="Program.cs" />
