@@ -32,6 +32,12 @@ namespace QuartzSampleFromConfig
 			testGeneric.Test();
 			testGeneric.TestGeneric();
 
+			var testConnection = new TestDbConnection("Sql");
+			testConnection.ReadData();
+			testConnection.SaveData();
+
+
+
 			Console.WriteLine("Press any key to exit...");
 			Console.ReadKey();
 		}

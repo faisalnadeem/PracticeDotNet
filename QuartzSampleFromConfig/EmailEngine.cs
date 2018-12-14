@@ -13,12 +13,13 @@ namespace QuartzSampleFromConfig
 		public void Start()
 		{
 			Console.WriteLine("Welcome to email engine");
-			SelectUpdateInlineTransaction.RunTasksWitCancellationToken();
+			EmailEngineOrchestrator.StartEmailEngineThreads();
+			//SelectUpdateInlineTransaction.RunTasksWitCancellationToken();
 		}
 
 		public void Stop()
 		{
-			SelectUpdateInlineTransaction.StopTasksWithCancellationToken();
+			EmailEngineOrchestrator.StopTasksWithCancellationToken();
 		}
 	}
 }

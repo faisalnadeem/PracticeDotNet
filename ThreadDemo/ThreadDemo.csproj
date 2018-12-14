@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MultiThreadingSample.cs" />
     <Compile Include="TaskExampleContinuationState.cs" />
     <Compile Include="TaskExampleContinueWith.cs" />
     <Compile Include="TaskExample.cs" />
