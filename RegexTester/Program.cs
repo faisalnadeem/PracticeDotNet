@@ -18,7 +18,7 @@ namespace RegexTester
 				Console.WriteLine("Type in org name to test");
 
 				p = Console.ReadLine();
-				OrganisationName.Test(p);
+				new OrganisationName().Test(p);
 			} while (p != "exit");
 		}
 	}
