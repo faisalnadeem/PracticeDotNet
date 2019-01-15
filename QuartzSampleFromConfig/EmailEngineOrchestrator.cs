@@ -122,6 +122,7 @@ namespace QuartzSampleFromConfig
 			}
 
 		}
+
 		public static void MarkAsConsumedById(int id, SqlConnection connection, SqlTransaction transaction,
 			string threadName)
 		{

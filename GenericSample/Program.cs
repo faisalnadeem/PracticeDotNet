@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using GenericSample;
 
-namespace QuartzSampleFromConfig
+namespace GenericSample
 {
 	class Program
 	{
@@ -22,11 +15,17 @@ namespace QuartzSampleFromConfig
 			container.Register(Component.For<IConnectionStringProvider>().ImplementedBy<DefaultConnectionStringProvider>());
 			container.Register(Component.For<IDbConnectionFactory>().ImplementedBy<SqlConnectionFactory>());
 			container.Register(Component.For<ITestGenerics>().ImplementedBy<TestGenerics>());
+			//container.Register(Classes.FromAssemblyContaining<ICar>().BasedOn<ICar>().WithService.FromInterface());
+			container.Register(Classes.FromThisAssembly().BasedOn<ICar>().WithService.Select(new[] { typeof(ICar) }));
+			container.Register(Component.For<ICarAssembler>().ImplementedBy<CarAssembler>());
 			var root = container.Resolve<ICompositionRoot>();
 
 			var connectionFactory = container.Resolve<IDbConnectionFactory>();
 
 			var connection = connectionFactory.CreateConnection<SqlConnection>();
+
+			//IEnumerable<ICar> cars = container.Resolve<IEnumerable<ICar>>();
+			var carAssembler = container.Resolve<ICarAssembler>();
 
 			var testGeneric = container.Resolve<ITestGenerics>();
 			testGeneric.Test();
@@ -50,5 +49,29 @@ namespace QuartzSampleFromConfig
 
 	public interface ICompositionRoot
 	{
+	}
+
+	public interface ICar
+	{
+		void Assemble();
+	}
+
+	public class Merc : ICar{
+		public void Assemble()
+		{
+			throw new NotImplementedException();
+		}
+	}
+	public class Bmw : ICar{
+		public void Assemble()
+		{
+			throw new NotImplementedException();
+		}
+	}
+	public class Audi : ICar{
+		public void Assemble()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

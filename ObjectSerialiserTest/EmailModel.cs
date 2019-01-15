@@ -194,7 +194,8 @@ namespace ObjectSerialiserTest
 		public NoddleNoAlertNotificationEmailModel(string recipient,
 			BrandedAccount? branding,
 			string name,
-			Guid customerId)
+			Guid customerId,
+			string pageName	= "")
 			: base(new[] { recipient }, "Good news from Noddle – you have no new alerts", branding)
 		{
 			Name = name;
@@ -203,6 +204,31 @@ namespace ObjectSerialiserTest
 
 		//[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 		protected NoddleNoAlertNotificationEmailModel()
+		{
+		}
+
+	}
+
+	public class NoAlertNotificationEmailModel : EmailModel
+	{
+		public Guid CustomerId { get; set; }
+
+		public string Name { get; private set; }
+
+
+		public NoAlertNotificationEmailModel(string recipient,
+			BrandedAccount? branding,
+			string name,
+			Guid customerId,
+			string pageName	= "")
+			: base(new[] { recipient }, "Good news from Noddle – you have no new alerts", branding)
+		{
+			Name = name;
+			CustomerId = customerId;
+		}
+
+		//[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+		protected NoAlertNotificationEmailModel()
 		{
 		}
 

@@ -22,6 +22,7 @@ namespace QuartzSampleFromConfig.Helpers
 				command.ExecuteNonQuery();
 			}
 		}
+
 		public static void CleanEmailQueueTable()
 		{
 			var sentBefore = DateTime.Today.AddDays(-7);

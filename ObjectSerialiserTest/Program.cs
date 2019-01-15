@@ -63,6 +63,10 @@ namespace ObjectSerialiserTest
 	public class UserData
 	{
 		public int UserId { get; set; }
+		public string Email { get; set; }
+		public BrandedAccount? BrandedAccount { get; set; }
+		public string FirstName { get; set; }
+		public Guid CustomerId { get; set; }
 	}
 
 	public class SimpleUser : UserData

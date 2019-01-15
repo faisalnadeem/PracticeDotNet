@@ -25,9 +25,20 @@ namespace ObjectSerialiserTest
 				"FirstName",
 				Guid.NewGuid());
 
+
 			string json1 = JsonConvert.SerializeObject(model, jset);
 
 
+				var templateName = model.GetType().Name;
+			switch (templateName)
+			{
+					case nameof(NoddleNoAlertNotificationEmailModel):
+						Console.WriteLine($"{templateName} = {nameof(NoddleNoAlertNotificationEmailModel)}");
+						return;
+					default:
+						Console.WriteLine($"{templateName} not found");
+						return;
+			}
 			try
 			{
 				var typeFullName = model.GetType().FullName;

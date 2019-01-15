@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CarAssembler.cs" />
     <Compile Include="MultiDataConnection.cs" />
     <Compile Include="DefaultConnectionStringProvider.cs" />
     <Compile Include="IConnectionStringProvider.cs" />

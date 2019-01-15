@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppDomain", "AppDomain\AppD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernateMigration.DataMigrations", "NHibernateMigration.DataMigrations\NHibernateMigration.DataMigrations.csproj", "{D5B580A5-DBDC-4F6C-A346-B8A82F40C037}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericSample", "GenericSample\GenericSample.csproj", "{D32F85C3-664D-4E1B-9F72-9C6808D56250}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericSample-WindsorContainer", "GenericSample\GenericSample-WindsorContainer.csproj", "{D32F85C3-664D-4E1B-9F72-9C6808D56250}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegexTester", "RegexTester\RegexTester.csproj", "{D71B1676-7673-4F77-B798-E4A0C3CCC478}"
 EndProject
