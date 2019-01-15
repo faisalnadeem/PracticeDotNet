@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 
 namespace GenericSample
@@ -11,6 +12,7 @@ namespace GenericSample
 		static void Main(string[] args)
 		{
 			var container = new WindsorContainer();
+			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 			container.Register(Component.For<ICompositionRoot>().ImplementedBy<CompositionRoot>());
 			container.Register(Component.For<IConnectionStringProvider>().ImplementedBy<DefaultConnectionStringProvider>());
 			container.Register(Component.For<IDbConnectionFactory>().ImplementedBy<SqlConnectionFactory>());
