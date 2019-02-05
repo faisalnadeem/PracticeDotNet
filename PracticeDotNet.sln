@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentValidationTest", "Flu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialiserTest", "ObjectSerialiserTest\ObjectSerialiserTest.csproj", "{A451D25C-23E0-469F-A498-5DA294098531}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhibernateTransformersSammple", "NhibernateTransformersSammple\NhibernateTransformersSammple.csproj", "{6E36E3EF-BCBF-4C4A-82CD-B9571EEC0FD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,10 @@ Global
 		{A451D25C-23E0-469F-A498-5DA294098531}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A451D25C-23E0-469F-A498-5DA294098531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A451D25C-23E0-469F-A498-5DA294098531}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E36E3EF-BCBF-4C4A-82CD-B9571EEC0FD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E36E3EF-BCBF-4C4A-82CD-B9571EEC0FD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E36E3EF-BCBF-4C4A-82CD-B9571EEC0FD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E36E3EF-BCBF-4C4A-82CD-B9571EEC0FD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
