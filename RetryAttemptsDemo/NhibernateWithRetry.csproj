@@ -72,6 +72,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LeftJoinDemo.cs" />
+    <Compile Include="LeftOuterJoinExample.cs" />
     <Compile Include="NhibernateData\Car.cs" />
     <Compile Include="NhibernateData\ModelMappers.cs" />
     <Compile Include="NhibernateData\CreditReportNotificationTestUpdate.cs" />

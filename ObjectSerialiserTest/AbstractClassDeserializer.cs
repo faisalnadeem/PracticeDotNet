@@ -39,54 +39,54 @@ namespace ObjectSerialiserTest
 						Console.WriteLine($"{templateName} not found");
 						return;
 			}
-			try
-			{
-				var typeFullName = model.GetType().FullName;
-				var json2 = JsonConvert.SerializeObject(model);
-				var deserializedModel = JsonConvert.DeserializeObject<EmailModel>(json2, new ParametersContructorConverter(typeFullName));
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-			}
+			//try
+			//{
+			//	var typeFullName = model.GetType().FullName;
+			//	var json2 = JsonConvert.SerializeObject(model);
+			//	var deserializedModel = JsonConvert.DeserializeObject<EmailModel>(json2, new ParametersContructorConverter(typeFullName));
+			//}
+			//catch (Exception e)
+			//{
+			//	Console.WriteLine(e);
+			//}
 
-			return;
+			//return;
 
 
-			try
-			{
-				EmailModel emodel = (EmailModel) JsonConvert.DeserializeObject(json1, jset); //Collection was of a fixed size
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-			}
+			//try
+			//{
+			//	EmailModel emodel = (EmailModel) JsonConvert.DeserializeObject(json1, jset); //Collection was of a fixed size
+			//}
+			//catch (Exception e)
+			//{
+			//	Console.WriteLine(e);
+			//}
 			//EmailModel emodel = (EmailModel) JsonConvert.DeserializeObject(json1, jset);//Collection was of a fixed size
 
 
-			try
-			{
-				var typeFullName = model.GetType().FullName;
-				EmailModel dsModel = (EmailModel) JsonConvert.DeserializeObject(json1, new JsonSerializerSettings{
-					ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
-				});
+			//try
+			//{
+			//	var typeFullName = model.GetType().FullName;
+			//	EmailModel dsModel = (EmailModel) JsonConvert.DeserializeObject(json1, new JsonSerializerSettings{
+			//		ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
+			//	});
 
 
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-			}
+			//}
+			//catch (Exception e)
+			//{
+			//	Console.WriteLine(e);
+			//}
 
-			try
-			{
-				var json2 = JsonConvert.SerializeObject(model, jset);
-				var deserializedModel = (EmailModel) JsonConvert.DeserializeObject(json2, jset);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-			}
+			//try
+			//{
+			//	var json2 = JsonConvert.SerializeObject(model, jset);
+			//	var deserializedModel = (EmailModel) JsonConvert.DeserializeObject(json2, jset);
+			//}
+			//catch (Exception e)
+			//{
+			//	Console.WriteLine(e);
+			//}
 
 		}
 

@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractClassDeserializer.cs" />
+    <Compile Include="LeftJoinSample.cs" />
     <Compile Include="Processors\NoAlertNotificationEmailProcessor.cs" />
     <Compile Include="Processors\NoddleNoAlertNotificationEmailProcessor.cs" />
     <Compile Include="SerializationExtensions.cs" />

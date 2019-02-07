@@ -4,6 +4,23 @@ using NHibernate.Mapping.ByCode.Conformist;
 
 namespace NhibernateWithRetry.NhibernateData
 {
+    public class SubscriptionMapping : ClassMapping<Subscription>
+    {
+        public SubscriptionMapping()
+        {
+            Id(s => s.Id, im => im.Generator(Generators.Identity));  // primary key mapping
+            Property(s => s.Description, pm => pm.NotNullable(true));
+        }
+    }
+    public class CloseAccountMapping : ClassMapping<CloseAccount>
+    {
+        public CloseAccountMapping()
+        {
+            Id(s => s.Id, im => im.Generator(Generators.Identity));  // primary key mapping
+            Property(s => s.Description, pm => pm.NotNullable(true));
+        }
+    }
+
     public class PersonMapping : ClassMapping<Person>
     {
         public PersonMapping()

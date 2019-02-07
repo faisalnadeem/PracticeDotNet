@@ -14,23 +14,23 @@ namespace ObjectSerialiserTest
 			AbstractClassDeserializer.Test();
 			return;
 
-			new PersonSerialTest().SerializeAndDeserialize(GetProgrammer());
-			var userData = new UserData { UserId = 0 };
-			var userDataString = JsonConvert.SerializeObject(userData);
+			//new PersonSerialTest().SerializeAndDeserialize(GetProgrammer());
+			//var userData = new UserData { UserId = 0 };
+			//var userDataString = JsonConvert.SerializeObject(userData);
 
-			var simpleUser = new SimpleUser(){UserId = 1, Name = "Simple"};
-			var simpleUserDataString = JsonConvert.SerializeObject(simpleUser);
+			//var simpleUser = new SimpleUser(){UserId = 1, Name = "Simple"};
+			//var simpleUserDataString = JsonConvert.SerializeObject(simpleUser);
 
-			var complexUser = new SimpleUser(){UserId = 2, Name = "Complex"};
-			var complexUserDataString = JsonConvert.SerializeObject(simpleUser);
+			//var complexUser = new SimpleUser(){UserId = 2, Name = "Complex"};
+			//var complexUserDataString = JsonConvert.SerializeObject(simpleUser);
 
-			var typeOfObject = typeof(UserData).Name;
-			var typeOfSimpleObject = typeof(SimpleUser).Name;
+			//var typeOfObject = typeof(UserData).Name;
+			//var typeOfSimpleObject = typeof(SimpleUser).Name;
 
-			Type t = Type.GetType("UserData");
-			Type t1 = Type.GetType("ComplexUser");
+			//Type t = Type.GetType("UserData");
+			//Type t1 = Type.GetType("ComplexUser");
 
-			var usr = JsonConvert.DeserializeObject(simpleUserDataString, t);
+			//var usr = JsonConvert.DeserializeObject(simpleUserDataString, t);
 
 			
 

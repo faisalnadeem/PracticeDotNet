@@ -9,11 +9,11 @@ namespace NhibernateWithRetry.NhibernateData
         public void Test()
         {
             var configuration = ConfigureNhibernate();
-            InstantiateDatabase(configuration);
+            InstantiateDatabase(configuration, true);
 
             var creditReportNotification = new CreditReportNotificationTestUpdate().CreateCreditReportNotification();
-            var sefact = configuration.BuildSessionFactory();
-            using (var session = sefact.OpenSession())
+            var sessionFactory = configuration.BuildSessionFactory();
+            using (var session = sessionFactory.OpenSession())
             {
                 using (var tx = session.BeginTransaction())
                 {
@@ -44,6 +44,8 @@ namespace NhibernateWithRetry.NhibernateData
             modelMapper.AddMapping<PersonMapping>();
             modelMapper.AddMapping<CarMapping>();
             modelMapper.AddMapping<CreditReportNotificationMap>();
+            modelMapper.AddMapping<CloseAccountMapping>();
+            modelMapper.AddMapping<SubscriptionMapping>();
 
             var mapping = modelMapper.CompileMappingForAllExplicitlyAddedEntities();
             configuration.AddDeserializedMapping(mapping, "Test");
