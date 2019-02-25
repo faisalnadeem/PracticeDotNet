@@ -59,4 +59,36 @@ namespace NHibernateMigration.DataMigrations
 			}
 		}
 	}
+	
+	[Migration(3)]
+	public class Create_User_table_with_identity : ForwardOnlyMigration
+	{
+		public override void Up()
+		{
+			const string EMAIL_QUEUE_TABLE = "EmailQueue";
+
+			if (!Schema.Table(EMAIL_QUEUE_TABLE).Exists())
+			{
+				Create.Table(EMAIL_QUEUE_TABLE)
+					.WithColumn("Id").AsInt64().NotNullable().PrimaryKey().Identity()
+					.WithColumn("LastAlertFk").AsInt32().NotNullable();
+
+				MigrationHelper.CreateForeignKeyIfNotExist(
+					this,
+					EMAIL_QUEUE_TABLE,
+					"UserFk",
+					"Users",
+					"Id");
+
+				const string INDEX_NAME = "IX_EmailQueue_Status_SendAfter";
+
+				if (!Schema.Table(EMAIL_QUEUE_TABLE).Index(INDEX_NAME).Exists())
+				{
+					Execute.Sql(
+						//MigrationHelper.GetCurrentMigrationEnvironment() == MigrationEnvironment.Development?
+						$"CREATE NONCLUSTERED INDEX {INDEX_NAME} ON dbo.{EMAIL_QUEUE_TABLE}(Status ASC, SendAfter ASC) WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)");
+				}
+			}
+		}
+	}
 }

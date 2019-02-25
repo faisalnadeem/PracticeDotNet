@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Mapping;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
