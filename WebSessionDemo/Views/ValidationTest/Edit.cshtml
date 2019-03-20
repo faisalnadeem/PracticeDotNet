@@ -1,0 +1,95 @@
+﻿@model WebSessionDemo.Models.ValidationTestViewModel
+
+@{
+    ViewBag.Title = "Edit";
+	var ermsg = @"<div >
+	            <h4>Make your username secure</h4>
+	            <ul>
+	            <li>Must be between 8 and 30 characters long</li>
+	            <li>Only use upper and lower case letters, numbers and underscores</li>
+	            <li>Could be your email address used during this registration</li>
+	            </ul>
+	            </div>";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>ValidationTestViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+	    <div class="form-group">
+		    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+		    <div class="col-md-10">
+			    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+			    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+		    </div>
+	    </div>
+		
+		@Html.ValidationSummary()
+	    @*@if (ViewData?.ModelState["Name"]?.Errors?.Any() == true)
+	    {*@
+		    <div id="name-guide" hidden="hidden">
+			    <h4 class = "text-danger">Make your username secure</h4>
+
+			    <ul>
+				    <li class = "text-danger">Must be between 8 and 30 characters long</li>
+				    <li class = "text-danger">Only use upper and lower case letters, numbers and underscores</li>
+				    <li class = "text-danger">Could be your email address used during this registration</li>
+			    </ul>
+		    </div>
+@*	    }*@
+	    
+	    <div >
+		    <span>Please fix the following errors.</span>
+		    <ul>
+			    <li>Error Message 1</li>
+			    <li>Error Message 2</li>
+			    <li>Error Message 3</li>
+		    </ul>
+	    </div>
+
+	    <div class="form-group">
+            @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@section scripts{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#Name").on('focusout blur change',
+				function () {
+					console.log('focusout blur or change event triggered');
+					var showusernameguide = $(this).attr('aria-invalid');
+					console.log('showusernameguide = ' + showusernameguide);
+					console.log('showusernameguide === true ' + showusernameguide === "true");
+					if (showusernameguide === "true") {
+						$("#name-guide").show();
+					} else {
+						$("#name-guide").hide();
+					}
+				});
+		})
+
+	</script>
+}

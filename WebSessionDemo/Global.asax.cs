@@ -24,6 +24,17 @@ namespace WebSessionDemo
 
 		}
 
+		void Application_BeginRequest(object sender, EventArgs e)
+		{
+
+			if (HttpContext.Current.Request.Url.ToString().ToLower().Contains("redirecttest/from"))
+			{
+				HttpContext.Current.Response.Status = "301 Moved Permanently";
+				HttpContext.Current.Response.AddHeader("Location", Request.Url.ToString().ToLower().Replace("/from", "/to"));
+			}
+
+		}
+
 		protected void Session_Start()
 		{
 			// ensure username cookie is expired if it still exists
@@ -54,7 +65,7 @@ namespace WebSessionDemo
 	{
 		public static void EndIfStillConnected(this HttpResponse response)
 		{
-			// In order not to receive "The remote host closed the connection" errors, let's check if client is still connected before 
+			// In order not to receive "The remote host closed the connection" errors, let's check if client is still connected fore 
 			// sending him the content. Otherwise this error will occur.
 			if (response.IsClientConnected)
 				response.End();
