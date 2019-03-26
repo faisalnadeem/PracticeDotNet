@@ -182,6 +182,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CrossDomainCookieViewModel.cs" />
     <Compile Include="Models\ValidationTestViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -231,6 +232,7 @@
     <Content Include="Views\ValidationTest\Index.cshtml" />
     <Content Include="Views\RedirectTest\From.cshtml" />
     <Content Include="Views\RedirectTest\To.cshtml" />
+    <Content Include="Views\Home\TestCrossDomainCookie.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
