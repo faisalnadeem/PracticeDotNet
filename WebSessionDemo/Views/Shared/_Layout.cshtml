@@ -20,7 +20,13 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+	                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+	                <li >
+		                <a href="#" class="dropdown" data-toggle="dropdown">Actions</a>
+		                <ul class="dropdown-menu">
+			                <li>@Html.ActionLink("Test301", "Test301Redirect", "Home")</li>
+		                </ul>
+	                </li>
                     <li>@Html.ActionLink("XDomainCookie", "TestCrossDomainCookie", "Home")</li>
                     <li>@Html.ActionLink("Validations", "Index", "ValidationTest")</li>
                     <li>@Html.ActionLink("RedirectFrom", "From", "RedirectTest")</li>

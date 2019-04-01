@@ -65,6 +65,11 @@ namespace WebSessionDemo.Controllers
 			return View("TestIndexAsync");
 		}
 
+		public ActionResult Test301Redirect()
+		{
+			return RedirectPermanent("/RedirectTest/To/");
+		}
+
 		public ActionResult About()
 		{
 			ViewBag.Message = "Your application description page.";
