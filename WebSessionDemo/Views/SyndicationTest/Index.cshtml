@@ -1,0 +1,15 @@
+﻿@model System.ServiceModel.Syndication.SyndicationFeed
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<p>Feedid: @Html.DisplayTextFor(x=> Model.Id)							</p>
+<p>AttributeExtensions count: @Html.DisplayTextFor(x=> Model.AttributeExtensions.Count)</p>
+<p>Authors count: @Html.DisplayTextFor(x=> Model.Authors.Count)			</p>
+<p>Categories count: @Html.DisplayTextFor(x=> Model.Categories.Count)			</p>
+@foreach (var item in Model.Items)
+{
+	<p>Item id: @item.Id</p>
+	<p>Item content: @item.Content</p>
+}

@@ -70,7 +70,11 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -177,7 +181,9 @@
     <Compile Include="Contracts.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RedirectTestController.cs" />
+    <Compile Include="Controllers\RssFeedTestController.cs" />
     <Compile Include="Controllers\StringExtensions.cs" />
+    <Compile Include="Controllers\SyndicationTestController.cs" />
     <Compile Include="Controllers\ValidationTestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -233,9 +239,11 @@
     <Content Include="Views\RedirectTest\From.cshtml" />
     <Content Include="Views\RedirectTest\To.cshtml" />
     <Content Include="Views\Home\TestCrossDomainCookie.cshtml" />
+    <Content Include="Views\SyndicationTest\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\RSSFeedTest\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
