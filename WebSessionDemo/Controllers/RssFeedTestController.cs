@@ -17,7 +17,7 @@ namespace WebSessionDemo.Controllers
         public ActionResult Index()
         {
 		    var parliamentNewUrsl = "https://www.parliament.uk/g/RSS/news-feed/?pageInstanceId=209&limit=20";
-	        var newsFeed = GetAsync(parliamentNewUrsl);
+	        var newsFeed = GetAsync(parliamentNewUrsl).Result;
 
 			//	        var feed = new RssFeedTestViewModel
 			//	        {
@@ -34,10 +34,19 @@ namespace WebSessionDemo.Controllers
 	    {
 		    RssFeedTestViewModel feedAsync = null;
 		    var httpClient = new HttpClient();
-		    httpClient.DefaultRequestHeaders.Accept.Clear();
-			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			httpClient.DefaultRequestHeaders.Accept.Clear();
+			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/xml"));
 
-		    HttpResponseMessage response = await httpClient.GetAsync(path);
+			HttpResponseMessage response;
+		    try
+		    {
+				response = await httpClient.GetAsync(path);
+		    }
+		    catch (Exception e)
+		    {
+			    Console.WriteLine(e);
+			    throw;
+		    }
 		    if (response.IsSuccessStatusCode)
 		    {
 			    feedAsync = await response.Content.ReadAsAsync<RssFeedTestViewModel>();
@@ -48,7 +57,14 @@ namespace WebSessionDemo.Controllers
 
 	public class RssFeedTestViewModel
 	{
-		public IEnumerable<RssChannelItem> Item { get; set; }
+		[JsonProperty("channel")]
+		public IEnumerable<RssChannel> Channels { get; set; }
+	}
+
+	public class RssChannel
+	{
+		[JsonProperty("item")]
+		public IEnumerable<RssChannelItem> Items { get; set; }
 	}
 
 	public class RssChannelItem
