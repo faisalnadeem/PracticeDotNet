@@ -1,5 +1,4 @@
 ﻿using System;
-using NhibernateWithRetry.NhibernateData;
 
 namespace NhibernateWithRetry
 {

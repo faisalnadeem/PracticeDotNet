@@ -53,7 +53,8 @@ namespace WebApp.Data
 			{
 				// Get the type code so we can switch
 				var typeCode = Type.GetTypeCode(propertyType);
-				switch (typeCode)
+                string value = "";
+                switch (typeCode)
 				{
 					case TypeCode.Int32:
 						prop.SetValue(type, Convert.ToInt32(value), null);
@@ -67,7 +68,8 @@ namespace WebApp.Data
 					case TypeCode.Object:
 						if (propertyType == typeof(Guid) || propertyType == typeof(Guid?))
 						{
-							prop.SetValue(obj, Guid.Parse(value), null);
+                            object obj = null;
+                            prop.SetValue(obj, Guid.Parse(value), null);
 							return;
 						}
 						break;

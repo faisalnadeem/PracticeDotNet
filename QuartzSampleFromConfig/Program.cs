@@ -3,21 +3,55 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
+using NodaTime;
 using Quartz;
 using QuartzSampleFromConfig.Helpers;
 
 namespace QuartzSampleFromConfig
 {
 	class Program
-	{
+    {
+        
 		static string _connectionString = @"Server=PLLLP9435;initial catalog=EmailPoc;Integrated Security=true";
 		static void Main(string[] args)
-		{
+        {
+        const string DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:sszzz";
+
+            var estDel = "12/12/2020";
+            const string startTime = "00:00:00";
+            const string endTime = "23:59:59";
+
+        DateTime? estStart; 
+            estStart = DateTime.Parse($"{estDel} {startTime}");
+        DateTime? estEmd;
+           estEmd = DateTime.Parse($"{estDel} {endTime}");
+
+            DateTimeOffset eventTimestamp = new DateTimeOffset(2020, 12, 10, 10, 12, 20, TimeSpan.Zero);
+			var deliverySlotDate = ParseDeliverySlotDate(eventTimestamp);
+
+        const string ESTIMATED_DELIVERY_DATE_TIME_START = "00:00:00";
+        const string ESTIMATED_DELIVERY_DATE_TIME_END = "23:59:59";
+
+
+		var dateStart = (DateTime?) DateTime.Parse($"{deliverySlotDate} {ESTIMATED_DELIVERY_DATE_TIME_START}");
+		var dateEnd = (DateTime?) DateTime.Parse($"{deliverySlotDate} {ESTIMATED_DELIVERY_DATE_TIME_END}");
+
+
+		   Console.WriteLine(estStart.Value.ToString(DATE_TIME_FORMAT));
+		   Console.WriteLine(estEmd.Value.ToString(DATE_TIME_FORMAT));
+        return;
+
+
+		new CronExpressionToTimestamp().TestCronExpressionConversion();
+
+			return;
 			//Console.WriteLine("Writing out to file - C:/sftptemp/ConsoleOutputToFile.txt");
 			//StartConsoleOutputToFile();
 			var allThreadsCulture = new CultureInfo(ConfigurationManager.AppSettings["AllThreadsCulture"]);
@@ -34,7 +68,25 @@ namespace QuartzSampleFromConfig
 			Console.ReadKey();
 		}
 
-		private static void StopConsoleOutputToFile()
+        private static LocalDate ParseDeliverySlotDate(DateTimeOffset? deliverySlotAvailableEvent)
+        {
+            var deliverySlotDate = deliverySlotAvailableEvent ?? DateTimeOffset.UtcNow;
+
+            // convert the date to carrier default time zone
+            var deliverySlotDateInCarrierZone = ConvertToCarrierZonedDateTime(deliverySlotDate);
+            return deliverySlotDateInCarrierZone.Date;
+        }
+        public const string CARRIER_TIMEZONE = "Europe/London";
+
+		private static ZonedDateTime ConvertToCarrierZonedDateTime(DateTimeOffset dateTimeOffset)
+        {
+            var carrierTimeZone = DateTimeZoneProviders.Tzdb[CARRIER_TIMEZONE];
+            var zonedDateTimeNow = new ZonedDateTime(Instant.FromDateTimeOffset(dateTimeOffset), carrierTimeZone);
+            return zonedDateTimeNow;
+        }
+
+
+        private static void StopConsoleOutputToFile()
 		{
 			Console.SetOut(Console.Out);
 		}

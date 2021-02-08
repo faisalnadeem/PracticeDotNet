@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NhibernateWithRetry.NhibernateData;
+﻿using NhibernateWithRetry.NhibernateData;
 
 namespace NhibernateWithRetry
 {
-	public class LeftJoinDemo
+    public class LeftJoinDemo
 	{
 		public void Test()
 		{

@@ -1,8 +1,4 @@
-﻿using System.Configuration;
-using NHibernate.Cfg;
-using NHibernate.Mapping.ByCode;
-using NHibernate.Tool.hbm2ddl;
-using Configuration = NHibernate.Cfg.Configuration;
+﻿using Configuration = NHibernate.Cfg.Configuration;
 
 namespace NhibernateWithRetry.NhibernateData
 {

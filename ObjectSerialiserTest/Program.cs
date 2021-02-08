@@ -10,7 +10,9 @@ namespace ObjectSerialiserTest
 	class Program
 	{
 		static void Main(string[] args)
-		{
+        {
+            TestJsonSerializer.JsonObjectSerializer.MainTest();
+            return;
 			AbstractClassDeserializer.Test();
 			return;
 

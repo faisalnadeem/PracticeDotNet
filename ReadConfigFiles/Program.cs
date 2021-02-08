@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.MSBuild;
 
 namespace ReadConfigFiles
 {
@@ -35,13 +31,13 @@ namespace ReadConfigFiles
 
             }
 
-            var workspace = MSBuildWorkspace.Create();
-            var solution = workspace.OpenSolutionAsync(sln).Result;
-            var projects = solution.Projects;
-            foreach (var project in projects)
-            {
-                //TODO              
-            }
+            //var workspace = MSBuildWorkspace.Create();
+            //var solution = workspace.OpenSolutionAsync(sln).Result;
+            //var projects = solution.Projects;
+            //foreach (var project in projects)
+            //{
+            //    //TODO              
+            //}
 
             //var projects = new List<SolutionProject>();
             //var array = (Array)s_SolutionParser_projects.GetValue(solutionParser, null);

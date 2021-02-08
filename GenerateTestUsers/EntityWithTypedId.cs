@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace GenerateTestUsers
 {
-	[Serializable]
+    [Serializable]
 	public abstract class EntityWithTypedId<TId> : BaseObject, IEntityWithTypedId<TId>
 	{
 		/// <summary>
