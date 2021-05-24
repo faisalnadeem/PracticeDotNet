@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcGreeter";
+
+package greet;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply);
+  rpc CreateShipment(.greet.ShipmentSummaryRequest) returns (ShipmentSummaryResponse);
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings.
+message HelloReply {
+  string message = 1;
+}
+
+message ShipmentSummaryResponse{
+	 string Id = 1;
+     repeated string TrackingReferences = 2;
+
+}
+message ShipmentSummaryRequest
+{
+	 string Id = 1;
+	 //ShipmentState ShipmentState = 2;
+	 string StateLabel =2;
+	 State State = 3;
+
+	 //string[] TrackingReferences = ;
+
+	 string PackageTrackingReference = 4;
+
+	 //string[] CustomReferences = ;
+
+	 //string[] Tags = ;
+     //
+	 //string Retailer = ;
+     //
+	 //ShipmentType? ShipmentType = ;
+     //
+	 //PromisedDate PromisedDate = ;
+     //
+	 //ExpectedDeliveryDate ExpectedDeliveryDate = ;
+     //
+	 //Address[] Addresses = ;
+     //
+	 //Lateness Lateness = ;
+     //
+	 //bool MayBeMissing = ;
+     //
+	 //string Carrier = ;
+     //
+	 //string CarrierReference = ;
+     //
+	 //string CustomerId = ;
+     //
+	 //DateTimeOffset? DeliveredDate = ;
+     //
+	 //string ShippingLocationReference = ;
+     //
+	 //string TenantReference = ;
+     //
+	 //string ChannelReference = ;
+}
+
+
+
+enum State
+    {
+        Unknown=0 ;
+        ActionRequired= 1;
+        ArrivedAtDestinationCountry= 2;
+        AtCustoms= 3;
+        AwaitingDropOff=4 ;
+        CarrierChanged= 5;
+        CarrierRefusedToCollect= 6;
+        CarrierUnableToCollect= 7;
+        ShipmentIssue= 8;
+        ClearedThroughCustoms= 9;
+        CollectedByCarrier= 10;
+        CollectionRescheduled= 11;
+        CollectionScheduled= 12;
+        CustomsChargesDue= 13;
+        Damaged= 14;
+        Delayed= 15;
+        Delivered= 16;
+        DeliveredDamaged= 17;
+        DeliveredToNeighbour= 18;
+        DeliveredToReception= 19;
+        DeliveredToSafeLocation= 20;
+        DeliveryAddressChanged= 21;
+        DeliveryAttempted= 22;
+        DeliveryFailed= 23;
+        DeliveryFailedCardLeft= 24;
+        DeliveryRefused= 25;
+        DeliveryRescheduled= 26;
+        DeliveryScheduled= 27;
+        Destroyed= 28;
+        Dispatched= 29;
+        DroppedOff= 30;
+        ExchangeFailed= 31;
+        ExchangeSuccessful= 32;
+        FailedToCollect= 33;
+        FinalDeliveryAttempt= 34;
+        HeldByCarrier= 35;
+        IncorrectLabel= 36;
+        InTransit= 37;
+        InTransitWaiting= 38;
+        Lost= 39;
+        Missing= 40;
+        MissingManifest= 41;
+        Misrouted= 42;
+        OutForDelivery= 43;
+        PartiallyDelivered= 44;
+        ProofOfDeliveryAvailable= 45;
+        ReadyForCollection= 46;
+        Refunded= 47;
+        WillBeReturnedToSender= 48;
+        ReturnedToSender= 49;
+        CollectionReminder= 50;
+        FinalCollectionReminder= 51;
+        UnableToTrack = 52;
+    }

@@ -18,8 +18,20 @@ namespace BlobStorageDemo
 
         static void Main(string[] args)
         {
+            var randomString = RandomStringGenerator.RandomString(48);
             BlobStorageTest.EnumerateBlobs();
             Console.WriteLine("Hello World!");
+        }
+    }
+
+    public class RandomStringGenerator
+    {
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 
@@ -60,7 +72,7 @@ namespace BlobStorageDemo
 
             // Get a reference to a container named "sample-container" and then create it
             BlobContainerClient container = new BlobContainerClient(connectionStringDev, containerName);
-            container.Create();
+            //container.Create();
 
             // Upload a few blobs so we have something to list
             using FileStream fileToUpload = File.OpenRead(filePath);
