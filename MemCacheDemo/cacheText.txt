@@ -1,0 +1,2 @@
+﻿this is example text file.
+this is to test the caching functionality.

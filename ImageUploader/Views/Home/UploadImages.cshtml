@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewData["Title"] = "UploadImages";
+}
+
+<h1>UploadImages</h1>
+
+<form id="form1" runat="server">
+    <input type='file' id="imgInp" />
+    <img id="image_preview" src="/" alt="your image" />
+</form>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imgInp").change(function() {
+            readfile(this);
+        });
+
+        function readfile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
+
+@*<h2>File Drag & Drop Upload</h2>
+    <div id="dropZone">Drop your files here</div>
+    <br>
+    Uploaded Files:
+    <ul id="uploadResult">
+    </ul>
+
+    @section scripts{
+        <script src="/js/jquery.filedrop.js"></script>
+        <style type="text/css">
+            #dropZone {
+                background: gray;
+                border: black dashed 3px;
+                width: 1000px;
+                padding: 50px;
+                text-align: center;
+                color: white;
+            }
+        </style>
+        <script type="text/javascript">
+            $(function () {
+                $('#dropZone').filedrop({
+                    url: '@Url.Action("UploadImages")',
+                    paramname: 'files',
+                    maxFiles: 5,
+                    dragOver: function () {
+                        $('#dropZone').css('background', 'blue');
+                    },
+                    dragLeave: function () {
+                        $('#dropZone').css('background', 'gray');
+                    },
+                    drop: function () {
+                        $('#dropZone').css('background', 'gray');
+                    },
+                    afterAll: function () {
+                        $('#dropZone').html('The file(s) have been uploaded successfully!');
+                    },
+                    uploadFinished: function (i, file, response, time) {
+                        $('#uploadResult').append('<li>' + file.name + '</li>');
+                    }
+                });
+            });
+        </script>
+    }*@

@@ -1,0 +1,60 @@
+﻿@model List<FileData>
+@{
+    ViewData["Title"] = "ShowAllBlobs";
+}
+
+<h1>ShowAllBlobs</h1>
+<div>
+    <input type="button" id="but_display" value="show all uploaded images">
+
+    <div id="stage">
+
+    </div>
+</div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>FileName</th>
+                <th>FileSize</th>
+                <th>ModifiedOn</th>
+                <th>Download</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in Model)
+            {
+                <tr>
+                    <td>@data.FileName</td>
+                    <td>@data.FileSize</td>
+                    <td>@data.ModifiedOn</td>
+                    <td> <a href="/Demo/Download?blobName=@data.FileName">Download</a> </td>
+                    <td> <a href="/Demo/Delete?blobName=@data.FileName">Delete</a> </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+@section Scripts
+{
+    <script type="text/javascript"> 
+        $(document).ready(function() {
+            $("#but_display").click(function() { 
+                $.ajax({ 
+                    url: 'http://localhost:5000/Demo/GetAll/', 
+                    type: 'get', 
+                    success: function(response){ 
+                        console.log(response);
+                        $("#stage").empty();
+                        response.forEach((data) => {
+                            console.log(data);
+
+                            $("#stage").append("<img src='" + data.fileName + "' width='200' >");
+
+                        });
+                    }
+                });
+
+            });
+        }); 
+    </script> 
+}

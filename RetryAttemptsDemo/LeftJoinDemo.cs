@@ -5,18 +5,18 @@ namespace NhibernateWithRetry
     public class LeftJoinDemo
 	{
 		public void Test()
-		{
-			var configuration = new DataHelper().ConfigureNhibernate();
-			var sessionFactory = configuration.BuildSessionFactory();
-			using (var session = sessionFactory.OpenSession())
-			{
-				using (var tx = session.BeginTransaction())
-				{
-					session.Save(new CloseAccount(){Description = "user1"});
-					//session.Save(creditReportNotification);
-					tx.Commit();
-				}
-			}
+        {
+   //         var configuration = new DataHelper();//.ConfigureNhibernate();
+			//var sessionFactory = configuration.BuildSessionFactory();
+			//using (var session = sessionFactory.OpenSession())
+			//{
+			//	using (var tx = session.BeginTransaction())
+			//	{
+			//		session.Save(new CloseAccount(){Description = "user1"});
+			//		//session.Save(creditReportNotification);
+			//		tx.Commit();
+			//	}
+			//}
 
 
 

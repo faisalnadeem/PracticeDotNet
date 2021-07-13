@@ -1,4 +1,8 @@
-﻿namespace NhibernateWithRetry.NhibernateData
+﻿using FluentNHibernate.Mapping;
+using NHibernate.Mapping.ByCode;
+using NHibernate.Mapping.ByCode.Conformist;
+
+namespace NhibernateWithRetry.NhibernateData
 {
     public class SubscriptionMapping : ClassMapping<Subscription>
     {
